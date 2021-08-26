@@ -1,0 +1,4 @@
+/movies/migrations/
+.idea
+/db.sqlite3
+/venv/
