@@ -2,8 +2,4 @@ from django.db import models
 
 # Create your models here.
 class Movie(models.Model):
-    Title = models.CharField(max_length=128)
-    Year = models.IntegerField()
-    Rated = models.CharField(max_length=16)
-    Released = models.DateField()
-    Director = models.CharField(max_length=128)
+    Data = models.JSONField()
