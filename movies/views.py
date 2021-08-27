@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from movies.models import Movie
-from movies.serializers import MovieSerializer
+from movies.serializers import MovieSerializer, GetMovieSerializer
+from utils.connector import APIConnector
 
 
 def index(request):
@@ -18,10 +19,22 @@ class MoviesViewSet(APIView):
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+    # POST to db
+    # def post(self, request, *args, **kwargs):
+    #     serializer = MovieSerializer(data=request.data, many=False)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     else:
+    #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def post(self, request, *args, **kwargs):
-        serializer = MovieSerializer(data=request.data, many=False)
+        serializer = GetMovieSerializer(data=request.data, many=False)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            q = serializer.data.get("question")
+            c = APIConnector(q)
+            c.get_movie_data()
+            return Response(status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
