@@ -10,7 +10,7 @@ class MovieClass:
     movie_data = {}
 
     def save_to_database(self):
-        m, created = Movie.objects.update_or_create(Data=self.movie_data)
+        m, created = Movie.objects.get_or_create(Data=self.movie_data)
         m.save()
 
 class APIConnector:
