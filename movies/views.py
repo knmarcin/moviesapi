@@ -22,7 +22,7 @@ class MoviesViewSet(APIView):
 
         if filtered_movies is not None:
             for item in filtered_movies:
-                movies = Movie.objects.filter(Data__Director__icontains=item)
+                movies = movies.filter(Data__Director__icontains=item)
 
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
