@@ -14,8 +14,14 @@ def index(request):
 
 class MoviesViewSet(APIView):
 
-    def get(self, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
+
         movies = Movie.objects.all()
+        filtered_movies = self.request.query_params.get('Director')
+
+        if filtered_movies is not None:
+            movies = Movie.objects.filter(Data__contains={"Director":filtered_movies})
+
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
