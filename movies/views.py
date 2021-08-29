@@ -17,10 +17,12 @@ class MoviesViewSet(APIView):
     def get(self, request, *args, **kwargs):
 
         movies = Movie.objects.all()
-        filtered_movies = self.request.query_params.get('Director')
+        filtered_movies = self.request.query_params.getlist('Director')
+        print(filtered_movies)
 
         if filtered_movies is not None:
-            movies = Movie.objects.filter(Data__contains={"Director":filtered_movies})
+            for item in filtered_movies:
+                movies = Movie.objects.filter(Data__Director__icontains=item)
 
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
