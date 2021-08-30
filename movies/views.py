@@ -15,17 +15,39 @@ def index(request):
 class MoviesViewSet(APIView):
 
     def get(self, request, *args, **kwargs):
+        queryset = Movie.objects.all()
 
-        movies = Movie.objects.all()
-        filtered_movies = self.request.query_params.getlist('Director')
-        print(filtered_movies)
+        # List of all available
+        filter_keys = [ # List of all available filter keys - it is expandable
+            'Director',
+            'Rated',
+            'Year',
+            'Genre',
+            'Title',
+        ]
+        filter = {}
 
-        if filtered_movies is not None:
-            for item in filtered_movies:
-                movies = movies.filter(Data__Director__icontains=item)
+        # Loop going through filter_keys list, checking if they are used as query_params
+        # If so, it gets all the values and start filtering step by step.
+        for key in filter_keys:
+            # filter_list is a list of values used by certain key
+            # There is possibility of having two or more same query_params
+            # ex. ?Director=Peter&Director=Jackson
+            filter_list = self.request.query_params.getlist(key)
+            if filter_list:
+                # For loop going through all the values for certain key and filtering it one by one.
+                for item in filter_list:
+                    # creating dictionary, then using it for filtering
+                    filter[f"Data__{key}__icontains"] = item
+                    queryset = queryset.filter(**filter)
 
-        serializer = MovieSerializer(movies, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = MovieSerializer(queryset, many=True)
+
+        if serializer.data:
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
 
     def post(self, request, *args, **kwargs):
         serializer = GetMovieSerializer(data=request.data, many=False)
