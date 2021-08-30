@@ -19,5 +19,5 @@ from movies.views import MoviesViewSet
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('movies', MoviesViewSet.as_view()),
+    path('movies/', MoviesViewSet.as_view()),
 ]
