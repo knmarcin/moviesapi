@@ -2,7 +2,6 @@
 
 API was designed to connect with omdbapi and receive dataset about movie, saving it in inner database.
 
-<hr>
 
 ### Endpoints
 
@@ -17,7 +16,6 @@ API was designed to connect with omdbapi and receive dataset about movie, saving
 * ```POST /comments``` yet not implemented
 * ```GET /comments``` yet not implemented
 
-<hr>
 
 ### Tests
 Few simple steps has beed created for the app
