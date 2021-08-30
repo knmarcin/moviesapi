@@ -54,7 +54,13 @@ class MoviesViewSet(APIView):
         if serializer.is_valid():
             q = serializer.data.get("question")
             c = APIConnector(q)
-            c.get_movie_data()
-            return Response(status=status.HTTP_201_CREATED)
+            check_if_created = c.get_movie_data()
+            if check_if_created==404:
+                return Response(data={"Error": "Movie wasn't found on external API"}, status=status.HTTP_404_NOT_FOUND)
+            elif check_if_created==400:
+                return Response(data={"Error": "Entry already exists"}, status=status.HTTP_204_NO_CONTENT)
+            elif check_if_created==201:
+                return Response(status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
