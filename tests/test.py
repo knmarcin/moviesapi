@@ -3,6 +3,7 @@ from rest_framework.test import APITestCase
 from movies.models import Movie
 
 
+# Movie
 class MoviesApiResponseTest(APITestCase):
     def test_movies_response(self):
         """ Simple get test. First should be 204, because of empty database """
@@ -164,3 +165,40 @@ class TestSort(APITestCase):
         a = a.first()
         b = b.order_by('Data__Year').first()
         self.assertNotEqual(a, b)
+
+
+# Comments
+class TestCommentsResponse(APITestCase):
+    def test_empty_list_response(self):
+        response = self.client.get('/comments/')
+        self.assertEqual(response.status_code, 204)
+
+    def test_post_response_id_does_not_exist(self):
+        response = self.client.post(
+            "/comments/",
+            {
+                "comment": "That is fantastic movie!",
+                "movie_id": 3
+            }
+        )
+        self.assertEqual(response.status_code, 400)
+
+
+class TestComments(APITestCase):
+    def setUp(self) -> None:
+        self.movie = Movie.objects.create(id=1, Data={"Year": 2011})
+
+    def test_comments_response(self):
+        response = self.client.get("/comments/")
+        self.assertEqual(response.status_code, 204)
+
+    def test_post_responses(self):
+        self.client.get('/movies/')
+        response = self.client.post(
+            '/comments/',
+            {
+                'comment': 'That is fantastic movie!',
+                'movie_id': 1
+            }
+        )
+        self.assertEqual(response.status_code, 201)
