@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -6,10 +5,6 @@ from rest_framework.views import APIView
 from movies.models import Movie
 from movies.serializers import MovieSerializer, GetMovieSerializer
 from utils.connector import APIConnector
-
-
-def index(request):
-    return HttpResponse("Hello World")
 
 
 class MoviesViewSet(APIView):
