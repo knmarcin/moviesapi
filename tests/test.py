@@ -66,8 +66,10 @@ class MoviesApiResponseTest(APITestCase):
         )
         self. assertEqual(response.status_code, 204)
 
-    def test_get_correct_filters(self):
-        """ Filter tests, checks if you can use many arguments in one filter"""
+
+class TestFilters(APITestCase):
+    """ Filter tests, checks if you can use many arguments in one filter"""
+    def setUp(self) -> None:
         self.client.post(
             "/movies/",
             {
@@ -89,22 +91,29 @@ class MoviesApiResponseTest(APITestCase):
             }
         )
 
+    def test_easiest_case(self):
         response = self.client.get('/movies/', {'Director': 'Peter Jackson'})
         self.assertEqual(response.status_code, 200)
 
+    def test_filter_two_arguments_one_key(self):
         response = self.client.get('/movies/', {'Director': ['Jackson', 'Peter']})
         self.assertEqual(response.status_code, 200)
 
+    def test_filter_three_arguments_one_key(self):
         response = self.client.get('/movies/', {'Director': ['Jackson', 'Michael', 'Peter']})
         self.assertEqual(response.status_code, 204)
 
+    def test_empty_response(self):
         response = self.client.get('/movies/', {'Director': 'Nolan Christopher'})
         self.assertEqual(response.status_code, 204)
 
+    def test_filter_different_arg(self):
         response = self.client.get('/movies/', {'Rated': 'PG-13'})
         self.assertEqual(response.status_code, 200)
 
-    def test_get_sort(self):
+
+class TestSort(APITestCase):
+    def setUp(self) -> None:
         self.client.post(
             "/movies/",
             {
@@ -118,7 +127,6 @@ class MoviesApiResponseTest(APITestCase):
             }
         )
 
-
         self.client.post(
             "/movies/",
             {
@@ -126,7 +134,7 @@ class MoviesApiResponseTest(APITestCase):
             }
         )
 
-        # Simple test if two same objects
+    def test_same_objects(self):
         a = Movie.objects.all()
         b = Movie.objects.all()
         a = a.first()
@@ -134,6 +142,7 @@ class MoviesApiResponseTest(APITestCase):
         self.assertEqual(a, b)
 
         # test if default sorting works
+    def test_default_sorting(self):
         a = Movie.objects.all()
         b = Movie.objects.all()
         a = a.first()
@@ -141,6 +150,7 @@ class MoviesApiResponseTest(APITestCase):
         self.assertEqual(a, b)
 
         # test if sorting works desc
+    def test_sorting_desc(self):
         a = Movie.objects.all()
         b = Movie.objects.all()
         a = a.first()
@@ -148,6 +158,7 @@ class MoviesApiResponseTest(APITestCase):
         self.assertEqual(a, b)
 
         # test if sorting works asc
+    def test_sorting_asc(self):
         a = Movie.objects.all()
         b = Movie.objects.all()
         a = a.first()
