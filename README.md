@@ -15,8 +15,10 @@ API was designed to connect with omdbapi and receive dataset about movie, saving
     * ex. ```{"question":"hobbit}```
     * gets data from OMDB API and saves it in inner database, with all the details
     
-* ```POST /comments``` yet not implemented
-* ```GET /comments``` yet not implemented
+* ```POST /comments``` 
+  * ```{"movie_id: 1, "comment":"example"}``` saves comment in database and it is returned in
+  request response.
+* ```GET /comments``` Fetches all the comments present in application database
 
 
 ### Tests
