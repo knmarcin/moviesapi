@@ -74,8 +74,10 @@ class CommentViewSet(APIView):
     def get(self, request, *args, **kwargs):
         queryset = Comment.objects.all()
         serializer = CommentSerializer(queryset, many=True)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if serializer.data:
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
     def post(self, request, *args, **kwargs):
         serializer = CommentSerializer(data=request.data, many=False)
