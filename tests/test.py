@@ -202,6 +202,7 @@ class TestComments(APITestCase):
         )
         self.assertEqual(response.status_code, 201)
 
+
 class TestFilterComments(APITestCase):
     def setUp(self) -> None:
         Movie.objects.create(id=1, Data={"Year": 2011})
@@ -224,10 +225,9 @@ class TestFilterComments(APITestCase):
         )
 
     def test_comment_filter(self):
-        response = self.client.get('/comments/', {'id':1})
+        response = self.client.get('/comments/', {'id': 1})
         self.assertEqual(response.status_code, 200)
 
     def test_comment_filter_empty_response(self):
-        response = self.client.get('/comments/', {'id':6})
+        response = self.client.get('/comments/', {'id': 6})
         self.assertEqual(response.status_code, 204)
-
