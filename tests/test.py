@@ -201,3 +201,33 @@ class TestComments(APITestCase):
             }
         )
         self.assertEqual(response.status_code, 201)
+
+class TestFilterComments(APITestCase):
+    def setUp(self) -> None:
+        Movie.objects.create(id=1, Data={"Year": 2011})
+        Movie.objects.create(id=2, Data={"Year": 2012})
+        Movie.objects.create(id=3, Data={"Year": 2013})
+
+        self.client.post(
+            '/comments/',
+            {
+                'comment': 'That is fantastic movie!',
+                'movie_id': 1
+            }
+        )
+        self.client.post(
+            '/comments/',
+            {
+                'comment': 'Outstanding!',
+                'movie_id': 1
+            }
+        )
+
+    def test_comment_filter(self):
+        response = self.client.get('/comments/', {'id':1})
+        self.assertEqual(response.status_code, 200)
+
+    def test_comment_filter_empty_response(self):
+        response = self.client.get('/comments/', {'id':6})
+        self.assertEqual(response.status_code, 204)
+
