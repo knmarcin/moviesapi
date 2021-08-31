@@ -73,12 +73,15 @@ class MoviesViewSet(APIView):
 class CommentViewSet(APIView):
     def get(self, request, *args, **kwargs):
         queryset = Comment.objects.all()
+        id_filter = self.request.query_params.get('id')
+        if id_filter:
+            queryset = queryset.filter(movie_id__exact=id_filter)
         serializer = CommentSerializer(queryset, many=True)
         if serializer.data:
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_204_NO_CONTENT)
-        #TODO Filter by movie_id
+
 
     def post(self, request, *args, **kwargs):
         serializer = CommentSerializer(data=request.data, many=False)
