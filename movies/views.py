@@ -41,6 +41,16 @@ class MoviesViewSet(APIView):
                     filter[f"Data__{key}__icontains"] = item
                     queryset = queryset.filter(**filter)
 
+
+        # Optional sort. You can choose any field after Data.
+        sort_by = self.request.query_params.get('sort')
+        if sort_by:
+            queryset = queryset.order_by(f"Data__{sort_by}")
+
+        # Default sort is by not nested - id.
+        else:
+            queryset = queryset.order_by('-id')
+
         serializer = MovieSerializer(queryset, many=True)
 
         if serializer.data:

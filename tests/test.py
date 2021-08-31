@@ -88,7 +88,6 @@ class MoviesApiResponseTest(APITestCase):
                 "question": "The Battle of the Five Armies"
             }
         )
-        print(Movie.objects.all())
 
         response = self.client.get('/movies/', {'Director': 'Peter Jackson'})
         self.assertEqual(response.status_code, 200)
@@ -104,3 +103,56 @@ class MoviesApiResponseTest(APITestCase):
 
         response = self.client.get('/movies/', {'Rated': 'PG-13'})
         self.assertEqual(response.status_code, 200)
+
+    def test_get_sort(self):
+        self.client.post(
+            "/movies/",
+            {
+                "question": "Unexpected Journey"
+            }
+        )
+        self.client.post(
+            "/movies/",
+            {
+                "question": "The Battle of the Five Armies"
+            }
+        )
+
+
+        self.client.post(
+            "/movies/",
+            {
+                "question": "Desolation of Smaug"
+            }
+        )
+
+        # Simple test if two same objects
+        A = Movie.objects.all()
+        B = Movie.objects.all()
+        A = A.first()
+        B = B.first()
+        self.assertEqual(A,B)
+
+        # test if default sorting works
+        A = Movie.objects.all()
+        B = Movie.objects.all()
+        A = A.first()
+        B = B.order_by('id').first()
+        self.assertEqual(A,B)
+
+        # test if sorting works desc
+        A = Movie.objects.all()
+        B = Movie.objects.all()
+        A = A.first()
+        B = B.order_by('-Data__Year').first()
+        self.assertEqual(A,B)
+
+        # test if sorting works asc
+        A = Movie.objects.all()
+        B = Movie.objects.all()
+        A = A.first()
+        B = B.order_by('Data__Year').first()
+        self.assertNotEqual(A,B)
+
+
+
