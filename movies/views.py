@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from movies.models import Movie, Comment
 from movies.serializers import MovieSerializer, GetMovieSerializer, CommentSerializer
 from utils.connector import APIConnector
+from utils.comment_validator import no_empty_validator
 
 
 class MoviesViewSet(APIView):
@@ -84,6 +85,10 @@ class CommentViewSet(APIView):
 
 
     def post(self, request, *args, **kwargs):
+
+        comment = request.data.get("comment")
+        no_empty_validator(comment)
+
         serializer = CommentSerializer(data=request.data, many=False)
         if serializer.is_valid():
             serializer.save()
