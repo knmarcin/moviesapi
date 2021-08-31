@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from movies.models import Movie
+from movies.models import Movie, Comment
 
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,3 +9,8 @@ class MovieSerializer(serializers.ModelSerializer):
 
 class GetMovieSerializer(serializers.Serializer):
     question = serializers.CharField(max_length=50)
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('id', 'comment', 'movie_id')

@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from movies.views import MoviesViewSet
+from movies.views import MoviesViewSet, CommentViewSet
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('movies/', MoviesViewSet.as_view()),
+    path('comments/', CommentViewSet.as_view()),
 ]
