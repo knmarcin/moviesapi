@@ -193,7 +193,6 @@ class TestComments(APITestCase):
         self.assertEqual(response.status_code, 204)
 
     def test_post_responses(self):
-        self.client.get('/movies/')
         response = self.client.post(
             '/comments/',
             {
