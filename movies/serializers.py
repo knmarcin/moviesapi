@@ -13,4 +13,4 @@ class GetMovieSerializer(serializers.Serializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('id', 'comment', 'movie_id')
+        fields = ('comment', 'movie_id')
