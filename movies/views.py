@@ -78,6 +78,7 @@ class CommentViewSet(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_204_NO_CONTENT)
+        #TODO Filter by movie_id
 
     def post(self, request, *args, **kwargs):
         serializer = CommentSerializer(data=request.data, many=False)
