@@ -1,6 +1,3 @@
-from rest_framework.response import Response
-from rest_framework import status
-
 import json
 import requests
 
@@ -8,6 +5,7 @@ from movies.models import Movie
 
 api_key = 'bb4cf141'
 url = f"http://www.omdbapi.com/?apikey={api_key}&t="
+
 
 class MovieClass:
     movie_data = {}
@@ -19,6 +17,7 @@ class MovieClass:
             return 201
         else:
             return 400
+
 
 class APIConnector:
     def __init__(self, q: str):

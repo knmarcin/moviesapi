@@ -127,32 +127,29 @@ class MoviesApiResponseTest(APITestCase):
         )
 
         # Simple test if two same objects
-        A = Movie.objects.all()
-        B = Movie.objects.all()
-        A = A.first()
-        B = B.first()
-        self.assertEqual(A,B)
+        a = Movie.objects.all()
+        b = Movie.objects.all()
+        a = a.first()
+        b = b.first()
+        self.assertEqual(a, b)
 
         # test if default sorting works
-        A = Movie.objects.all()
-        B = Movie.objects.all()
-        A = A.first()
-        B = B.order_by('id').first()
-        self.assertEqual(A,B)
+        a = Movie.objects.all()
+        b = Movie.objects.all()
+        a = a.first()
+        b = b.order_by('id').first()
+        self.assertEqual(a, b)
 
         # test if sorting works desc
-        A = Movie.objects.all()
-        B = Movie.objects.all()
-        A = A.first()
-        B = B.order_by('-Data__Year').first()
-        self.assertEqual(A,B)
+        a = Movie.objects.all()
+        b = Movie.objects.all()
+        a = a.first()
+        b = b.order_by('-Data__Year').first()
+        self.assertEqual(a, b)
 
         # test if sorting works asc
-        A = Movie.objects.all()
-        B = Movie.objects.all()
-        A = A.first()
-        B = B.order_by('Data__Year').first()
-        self.assertNotEqual(A,B)
-
-
-
+        a = Movie.objects.all()
+        b = Movie.objects.all()
+        a = a.first()
+        b = b.order_by('Data__Year').first()
+        self.assertNotEqual(a, b)
